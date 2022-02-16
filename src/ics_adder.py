@@ -1,7 +1,7 @@
 import sys
 
 if len(sys.argv) != 2:
-    print("Usage: " + argv[0] + "[link]")
+    print("Usage: " + sys.argv[0] + "[link]")
 else:
     L = [sys.argv[1]]
     # writing to file
