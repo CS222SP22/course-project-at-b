@@ -1,5 +1,4 @@
 ###### Python Library Requirements without Version Specifiers ######
-sys
 datetime
 requests
 icalendar
