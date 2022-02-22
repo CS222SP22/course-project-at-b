@@ -45,16 +45,19 @@ else:
                 nextrule = False
 
             if dtstart or dtend or nextrule:
-                if datefor in "%s" % dtstart or datefor in "%s" % dtend or datefor in "%s" % nextrule:
-                    print("\n", event['summary'])
+                # if you wan't just today's info
+                #   uncomment if statement below and place lines after line 52 in if-statement
+                
+                # if datefor in "%s" % dtstart or datefor in "%s" % dtend or datefor in "%s" % nextrule:
+                print("\n", event['summary'])
 
-                    if dtstart and dtend:
-                        lenght = (dtend - dtstart).total_seconds()/60
-                    else:
-                        lenght = False
+                if dtstart and dtend:
+                    lenght = (dtend - dtstart).total_seconds()/60
+                else:
+                    lenght = False
 
-                    if not nextrule:
-                        if lenght:
-                            print("start: %s for %s minutes" % (dtstart, lenght))
-                    else:
-                        print("start: %s for %s minutes" % (nextrule, lenght))
+                if not nextrule:
+                    if lenght:
+                        print("start: %s for %s minutes" % (dtstart, lenght))
+                else:
+                    print("start: %s for %s minutes" % (nextrule, lenght))

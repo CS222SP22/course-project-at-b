@@ -10,9 +10,11 @@ elif sys.argv[1] == "-add" and len(sys.argv) != 3:
     print("Usage: python ics.py -add [link]")
 elif sys.argv[1] == "-add":
     # writing to file
-    file1 = open('ical_links.txt', 'w')
+    file1 = open('ical_links.txt', 'r')
     L = file1.readlines()
+    file1.close()
     L.append(sys.argv[2])
+    file1 = open('ical_links.txt', 'w')
     file1.writelines(L)
     file1.close()
     print("Added Link to Source File")
