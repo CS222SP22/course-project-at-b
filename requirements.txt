@@ -1,0 +1,6 @@
+###### Python Library Requirements without Version Specifiers ######
+datetime
+requests
+icalendar
+pytz
+dateutil
