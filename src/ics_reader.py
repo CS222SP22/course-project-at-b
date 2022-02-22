@@ -17,7 +17,7 @@ if len(calendars) == 0:
     print("No links stored")
 else:
     date = (datetime.now() + timedelta(days=0))
-    datefor = "%s" % date.strftime('%Y-%m-%d')
+    datefor = date.strftime('%Y-%m-%d')
 
     for calendar in calendars:
         r = requests.get(calendar)
@@ -45,9 +45,10 @@ else:
                 nextrule = False
 
             if dtstart or dtend or nextrule:
+                # if date <= dtstart or date <= dtend or date <= nextrule:
+
                 # if you wan't just today's info
-                #   uncomment if statement below and place lines after line 52 in if-statement
-                
+                #   uncomment if statement below and place lines after line 53 (inclusive) in if-statement
                 # if datefor in "%s" % dtstart or datefor in "%s" % dtend or datefor in "%s" % nextrule:
                 print("\n", event['summary'])
 
