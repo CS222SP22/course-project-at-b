@@ -1,4 +1,5 @@
 import sys
+import ics_reader
 
 filename = 'ical_links.txt'
 
@@ -12,18 +13,17 @@ elif sys.argv[1] == "-add" and len(sys.argv) != 3:
     print("Usage: python ics.py -add [link]")
 elif sys.argv[1] == "-add":
     # writing to file
-    file1 = open(filename, 'r')
-    L = file1.readlines()
-    file1.close()
-    L.append(sys.argv[2])
-    file1 = open(filename, 'w')
-    file1.writelines(L)
+    file1 = open(filename, 'a')
+    file1.writelines(sys.argv[2])
     file1.close()
     print("Added Link to Source File")
 elif sys.argv[1] == "-read":
     try:
-        a_file = open(filename)
+        ofs = open(filename, 'r')
     except IOError:
         print ("Could not open %s, please create file!" % filename)
     else:
-        import ics_reader
+        read_lines = ofs.readlines()
+        event_strings = ics_reader.ReadICal(read_lines)
+        for line in event_strings:
+            print(line + '\n')
