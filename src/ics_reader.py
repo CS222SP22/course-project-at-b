@@ -1,6 +1,7 @@
 # Library Imports
 from datetime import datetime
 from datetime import timedelta
+from xml.etree.ElementInclude import include
 import requests
 from icalendar import Calendar, Event, vDatetime
 from pytz import timezone
@@ -41,9 +42,16 @@ def GetEventData(event, date, tz):
             nextrule = False
     else:
         nextrule = False
+
+    # by Canvas's convention, filtering out regular events
+    # (meetings, zoom calls, all-day-events, etc.) because only
+    # they include the word "calendar" in the UID. 
+    if 'UID' in event:
+        uidtext = event.get('UID')
+        include_entry = (uidtext.find("calendar") == -1)
     
     # return the dates data for the event
-    return dtstart, dtend, nextrule
+    return dtstart, dtend, nextrule, include_entry
 
 """
 EventToString(event, date, tz)
@@ -56,10 +64,10 @@ def EventToString(event, date, tz):
     event_string = ""
 
     # obtain event data using GetEventData()
-    dtstart, dtend, nextrule = GetEventData(event, date, tz)
+    dtstart, dtend, nextrule, include_entry = GetEventData(event, date, tz)
 
     # if event has datatypes we should report
-    if dtstart or dtend or nextrule:
+    if (dtstart or dtend or nextrule) and include_entry:
         # add summary/title of the event to return string
         event_string += str(event['summary']).strip()
 
@@ -100,11 +108,16 @@ def ReadICal(calendars):
         # populate an ical object using text from downloaded file
         gcal = Calendar.from_ical(r.text)
 
+        # just outputting the whole calender, for debugging
+        # f = open('output.ics', 'wb')
+        # f.write(gcal.to_ical())
+        # f.close()
+
         # each event in ical files start with "VEVENT"
         # so walk through ical file and stop at every instance of "VEVENT"
         for event in gcal.walk('VEVENT'):
             event_strings.append(EventToString(event, date, tz))
+
     
     # return list of events as string
     return event_strings
-            

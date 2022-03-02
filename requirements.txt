@@ -1,8 +1,5 @@
-###### Python Library Requirements without Version Specifiers ######
-datetime
-requests
-icalendar
-pytz
-dateutil
-docopt
-
+docopt==0.6.2
+icalendar==4.0.9
+python_dateutil==2.8.2
+pytz==2021.3
+requests==2.27.1
