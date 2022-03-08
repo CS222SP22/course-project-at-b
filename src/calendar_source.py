@@ -11,15 +11,13 @@ class CalendarSourceTemplate:
     
     # main process for class, returns a string of events
     def request(self):
-        # create empty return value list
-        event_strings = []
         # make request to the link and load downloaded file
         r = requests.get(self.link)
         # populate an ical object using text from downloaded file
         self.gcal = Calendar.from_ical(r.text)
         # each event in ical files start with "VEVENT"
         # so walk through ical file and parse an event at every instance of "VEVENT"
-        events = map(lambda event: event, self.gcal.walk('VEVENT'))
+        events = self.gcal.walk('VEVENT')
         # parse each event to get its datatypes
         # if event does not have datatypes we should report, we filter them out
         events = filter(lambda event: any(self.get_event_data(event)), events)
