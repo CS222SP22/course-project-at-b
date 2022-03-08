@@ -12,7 +12,7 @@ class CalendarSourceTemplate:
     # main process for class, returns a string of events
     def request(self):
         # create empty return value list
-        event_strings = []
+        events_string = []
         # make request to the link and load downloaded file
         r = requests.get(self.link)
         # populate an ical object using text from downloaded file
