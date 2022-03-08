@@ -72,12 +72,12 @@ def eventToString(event, date, tz):
     return event_string
 
 """
-ReadICal(calendars)
+ReadICal(link)
 
-Takes a list of calendar links and returns a list of strings 
+Takes a link and returns a list of strings 
 Each string in the list contains the summary/title, start date, and end date of each event
 """
-def readICal(calendars):
+def readICal(link):
     # create empty return value list
     event_strings = []
     # define formate for time strings
@@ -90,17 +90,15 @@ def readICal(calendars):
     # set current data as string
     datefor = date.strftime('%Y-%m-%d')
 
-    # iterate through each link in list of links
-    for calendar in calendars:
-        # make request to the link and load downloaded file
-        r = requests.get(calendar)
-        # populate an ical object using text from downloaded file
-        gcal = Calendar.from_ical(r.text)
+    # make request to the link and load downloaded file
+    r = requests.get(link)
+    # populate an ical object using text from downloaded file
+    gcal = Calendar.from_ical(r.text)
 
-        # each event in ical files start with "VEVENT"
-        # so walk through ical file and stop at every instance of "VEVENT"
-        for event in gcal.walk('VEVENT'):
-            event_strings.append(eventToString(event, date, tz))
+    # each event in ical files start with "VEVENT"
+    # so walk through ical file and stop at every instance of "VEVENT"
+    for event in gcal.walk('VEVENT'):
+        event_strings.append(eventToString(event, date, tz))
     
     # return list of events as string
     return event_strings
