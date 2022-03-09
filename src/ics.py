@@ -28,7 +28,7 @@ def read():
         print ("Could not open %s, please create file!" % filename)
     else:
         read_lines = ofs.readlines()
-        event_strings = ics_reader.ReadICal(read_lines)
+        event_strings = ics_reader.readICal(read_lines)
         for line in event_strings:
             print(line + '\n')
 

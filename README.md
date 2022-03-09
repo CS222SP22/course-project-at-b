@@ -13,7 +13,7 @@ python3 -m venv ./venv
 Before running any code, run the following:
 
 ```
-./ venv/bin/activate/
+. venv/bin/activate/
 ```
 
 ## Package Management
