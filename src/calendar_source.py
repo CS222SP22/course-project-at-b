@@ -55,10 +55,6 @@ class CalendarSourceTemplate:
         # return the dates data for the event
         return dtstart, dtend, nextrule
     
-    # return the event's name using the string object
-    def stringify_event_name(self, event):
-        return ''
-    
     # return the event's name and the time using stringify_event_name as a helper function
     def stringify_event(self, event, dtstart, dtend, nextrule):
         event_name = self.stringify_event_name(event)
@@ -72,7 +68,13 @@ class CalendarSourceTemplate:
 
         return event_name + ': ' + event_timestamp
 
-    # a filter helper function to exclude an non-desired calendar events
+    # <------------- functions that will be overriden ------------->
+
+    # exclude an non-desired calendar events
     def filter_event(self, event):
         return True
+    
+    # return the event's name using the string object
+    def stringify_event_name(self, event):
+        return ''
 

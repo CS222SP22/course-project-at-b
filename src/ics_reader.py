@@ -6,8 +6,8 @@ from icalendar import Calendar, Event, vDatetime
 from pytz import timezone
 import dateutil.rrule as rrule
 
-# from cbtf-example import Cbtf
-import cbtf_example
+import calendar_source_cbtf
+import calendar_source_canvas
 
 """
 ReadICal(calendars)
@@ -24,10 +24,13 @@ def readICal(calendars):
         calendar_sources = []
 
         if "cbtf" in calendar_link:
-            cbtf_source = cbtf_example.Cbtf(calendar_link)
+            cbtf_source = calendar_source_cbtf.Cbtf(calendar_link)
             calendar_sources.append(cbtf_source)
+        if "canvas" in calendar_link:
+            canvas_source = calendar_source_canvas.Canvas(calendar_link)
+            calendar_sources.append(canvas_source)
         
-        # TODO: similar checks for moodle and canvas needed
+        # TODO: similar checks for moodle needed
 
         for cal_src in calendar_sources:
             event_strings.append(cal_src.request())
