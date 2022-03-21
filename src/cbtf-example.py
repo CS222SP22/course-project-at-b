@@ -1,3 +1,4 @@
+import json
 from calendar_source import CalendarSourceTemplate
 
 class Cbtf(CalendarSourceTemplate):
@@ -11,4 +12,4 @@ class Cbtf(CalendarSourceTemplate):
 
 if __name__ == '__main__':
     my_cbtf_source = Cbtf('https://cbtf.engr.illinois.edu/sched/icalendar/4f8ea873-ffbd-4cb1-8eb1-ebc0781a0898', 'CBTF')
-    print(my_cbtf_source.request())
+    print(json.dumps(my_cbtf_source.request(), indent=4, default=str))
