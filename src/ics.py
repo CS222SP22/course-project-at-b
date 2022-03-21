@@ -21,7 +21,7 @@ def add(link):
     file1.close()
     print("Added Link to Source File")
 
-def read():
+def read(): 
     try:
         ofs = open(filename, 'r')
     except IOError:
@@ -30,7 +30,8 @@ def read():
         read_lines = ofs.readlines()
         event_strings = ics_reader.readICal(read_lines)
         for line in event_strings:
-            print(line + '\n')
+            # print(line + '\n')
+            print(line)
 
 def main(arguments):
     if arguments['add']:

@@ -79,7 +79,13 @@ class CalendarSourceTemplate:
 
         return event_dictionary
 
-    # a filter helper function to exclude an non-desired calendar events
+    # <------------- functions that will be overriden ------------->
+
+    # exclude an non-desired calendar events
     def filter_event(self, event):
         return True
+    
+    # return the event's name using the string object
+    def stringify_event_name(self, event):
+        return ''
 
