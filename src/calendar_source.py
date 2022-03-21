@@ -6,8 +6,9 @@ from settings import format, tz, date, datefor
 
 class CalendarSourceTemplate:
     # intialize class using constructor
-    def __init__(self, link):
+    def __init__(self, link, source_name):
         self.link = link
+        self.source_name = source_name
     
     # main process for class, returns a string of events
     def request(self):
@@ -23,10 +24,10 @@ class CalendarSourceTemplate:
         events = filter(lambda event: any(self.get_event_data(event)), events)
         # we filter out any event that does should not be there according to our filter_event method
         events = filter(self.filter_event, events)
-        # we transform each individual event to a string using our stringify method
-        events_string = map(lambda event: self.stringify_event(event, *self.get_event_data(event)), events)
-        # return our event strings as a list
-        return list(events_string)
+        # we transform each individual event to a dictionary using our generate_event_dictionary method
+        events_dictionary = map(lambda event: self.generate_event_dictionary(event, *self.get_event_data(event)), events)
+        # return our event dictionaries as a list
+        return list(events_dictionary)
     
     # returns the start, end, and return rule for the event parameter
     def get_event_data(self, event):
@@ -55,22 +56,28 @@ class CalendarSourceTemplate:
         # return the dates data for the event
         return dtstart, dtend, nextrule
     
-    # return the event's name using the string object
-    def stringify_event_name(self, event):
-        return ''
+    # generate the values for each of the keys of the event_dictionary
+    def extract_event_info(self, event, event_dictionary):
+        pass
     
-    # return the event's name and the time using stringify_event_name as a helper function
-    def stringify_event(self, event, dtstart, dtend, nextrule):
-        event_name = self.stringify_event_name(event)
-        # if repeating rule does not exist, report start and end dates
-        # else report repeating rule date and end time after rule date
-        if not nextrule:
-            event_timestamp = ("%s to %s" % (dtstart, dtend))
-        else:
+    # return the event's information as a dicitonary
+    def generate_event_dictionary(self, event, dtstart, dtend, nextrule):
+        event_dictionary = {
+            'name': '',
+            'type': ''
+        }
+        # get event properties using extract_event_info helper method helper (for logic that varies class-to-class)
+        self.extract_event_info(event, event_dictionary)
+        # if repeating rule exists, report repeating rule date and end time after rule date
+        if nextrule:
             length = (dtend - dtstart).total_seconds() / 60.0
-            event_timestamp = ("%s to %s" % (nextrule, nextrule + length))
+            dtstart, dtend = nextrule, nextrule + length
 
-        return event_name + ': ' + event_timestamp
+        event_dictionary['timestamp'] = { 'start': dtstart, 'end': dtend }
+        
+        event_dictionary['source_name'] = self.source_name
+
+        return event_dictionary
 
     # a filter helper function to exclude an non-desired calendar events
     def filter_event(self, event):
