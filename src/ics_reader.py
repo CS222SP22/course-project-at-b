@@ -1,6 +1,7 @@
 # Library Imports
 from datetime import datetime
 from datetime import timedelta
+from xml.etree.ElementInclude import include
 import requests
 from icalendar import Calendar, Event, vDatetime
 from pytz import timezone
@@ -37,4 +38,3 @@ def readICal(calendars):
     
     # return list of events as string
     return event_strings
-            
