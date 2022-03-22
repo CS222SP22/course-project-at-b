@@ -1,9 +1,11 @@
 from calendar_source import CalendarSourceTemplate
 
 class Canvas(CalendarSourceTemplate):
-    def stringify_event_name(self, event):
+    def extract_event_info(self, event, event_dictionary):
         partitioned_string = event['summary'].partition('[')
-        return partitioned_string[0]
+        event_dictionary['name'] = partitioned_string[0]
+
+        event_dictionary['type'] = 'Exam/Quiz' #NO!
     
     def filter_event(self, event):
         return not 'calendar' in event['UID']
