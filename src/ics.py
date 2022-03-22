@@ -54,7 +54,7 @@ def read():
         for d in data['links']:
             #TODO: Pass in the LMS, for the purpose of better filtering.
             print(d)
-            event_strings = ics_reader.readICal(d['url'])
+            event_strings = ics_reader.readICal(d['url'], d['lms'])
             for line in event_strings:
                 print(line + '\n')
 

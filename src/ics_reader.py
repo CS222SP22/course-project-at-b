@@ -77,7 +77,8 @@ ReadICal(link)
 Takes a link and returns a list of strings 
 Each string in the list contains the summary/title, start date, and end date of each event
 """
-def readICal(link):
+def readICal(link, lms):
+    print(link, lms)
     # create empty return value list
     event_strings = []
     # define formate for time strings
