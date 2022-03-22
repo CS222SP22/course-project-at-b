@@ -42,7 +42,7 @@ def add(link, lms):
 	
 	print('Added Link to Source File')
 
-def read():
+def read(): 
     try:
         ofs = open(filename, 'r')
     except IOError:
@@ -56,7 +56,7 @@ def read():
             print(d)
             event_strings = ics_reader.readICal(d['url'], d['lms'])
             for line in event_strings:
-                print(line + '\n')
+                print(line)
 
 def create_file():
     data = {'link-count':0, 'links':[]}
