@@ -6,9 +6,8 @@ from settings import format, tz, date, datefor
 
 class CalendarSourceTemplate:
     # intialize class using constructor
-    def __init__(self, link, source_name):
+    def __init__(self, link):
         self.link = link
-        self.source_name = source_name
     
     # main process for class, returns a string of events
     def request(self):
@@ -71,7 +70,8 @@ class CalendarSourceTemplate:
     def generate_event_dictionary(self, event, dtstart, dtend, nextrule):
         event_dictionary = {
             'name': '',
-            'type': ''
+            'type': '',
+            'course': ''
         }
         # get event properties using extract_event_info helper method helper (for logic that varies class-to-class)
         self.extract_event_info(event, event_dictionary)
@@ -82,8 +82,6 @@ class CalendarSourceTemplate:
 
         event_dictionary['timestamp'] = { 'start': dtstart, 'end': dtend }
         
-        event_dictionary['source_name'] = self.source_name
-
         return event_dictionary
 
     # <------------- functions that will be overriden ------------->

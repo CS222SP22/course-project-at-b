@@ -25,10 +25,10 @@ def readICal(calendars):
         calendar_sources = []
 
         if "cbtf" in calendar_link:
-            cbtf_source = calendar_source_cbtf.Cbtf(calendar_link, "canvas")
+            cbtf_source = calendar_source_cbtf.Cbtf(calendar_link)
             calendar_sources.append(cbtf_source)
         if "canvas" in calendar_link:
-            canvas_source = calendar_source_canvas.Canvas(calendar_link, "cbtf")
+            canvas_source = calendar_source_canvas.Canvas(calendar_link)
             calendar_sources.append(canvas_source)
         
         # TODO: similar checks for moodle needed
