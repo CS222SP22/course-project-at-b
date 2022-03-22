@@ -2,3 +2,5 @@ venv/
 src/ical_links.txt
 src/__pycache__/
 __pycache__/
+output.ics
+output.txt

@@ -5,7 +5,7 @@ class Canvas(CalendarSourceTemplate):
         partitioned_string = event['summary'].partition('[')
         event_dictionary['name'] = partitioned_string[0]
 
-        event_dictionary['type'] = 'Exam/Quiz' #NO!
+        event_dictionary['type'] = 'Needs to be manually sorted'
     
     def filter_event(self, event):
         return not 'calendar' in event['UID']
