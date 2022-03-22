@@ -15,5 +15,5 @@ class Cbtf(CalendarSourceTemplate):
         return not 'Exam' in event['summary']
 
 if __name__ == '__main__':
-    my_cbtf_source = Cbtf('https://cbtf.engr.illinois.edu/sched/icalendar/4f8ea873-ffbd-4cb1-8eb1-ebc0781a0898')
+    my_cbtf_source = Cbtf('https://cbtf.engr.illinois.edu/sched/icalendar/db3b45d1-f730-4992-8842-a08401b99b32')
     print(json.dumps(my_cbtf_source.request(), indent=4, default=str))
