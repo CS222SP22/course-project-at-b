@@ -2,6 +2,7 @@ from icalendar import Calendar
 import requests
 import settings
 from settings import format, tz, date, datefor
+import datetime
 
 
 class CalendarSourceTemplate:
@@ -40,13 +41,19 @@ class CalendarSourceTemplate:
         # if a start date attribute exists for event, assign it to dtstart
         #   else set dtstart to false to show no start date
         if 'DTSTART' in event:
-            dtstart = event['DTSTART'].dt.astimezone(tz) # assign time in chosen timezone
+            if not isinstance(event['DTSTART'].dt, datetime.datetime):
+                dtstart =  datetime.datetime.combine(event['DTSTART'].dt, datetime.datetime.min.time()).astimezone(tz)
+            else:
+                dtstart = event['DTSTART'].dt.astimezone(tz) # assign time in chosen timezone
         else:
             dtstart = False
         # if an end date attribute exists for event, assign it to dtend
         #   else set dtend to false to show no end date
         if 'DTEND' in event:
-            dtend = event['DTEND'].dt.astimezone(tz) # assign time in chosen timezone
+            if not isinstance(event['DTEND'].dt, datetime.datetime):
+                dtend =  datetime.datetime.combine(event['DTEND'].dt, datetime.datetime.max.time()).astimezone(tz)
+            else:
+                dtend = event['DTEND'].dt.astimezone(tz) # assign time in chosen timezone
         else:
             dtend = False
         # if a repeating rule exists, calculate the next time the rule exists after today
