@@ -9,8 +9,8 @@ class Cbtf(CalendarSourceTemplate):
 
         event_dictionary['type'] = 'Exam/Quiz'
 
-        partitioned_summary = event['summary'][14:].partition(" ")	
-        event_dictionary['course'] = partitioned_summary[0] + " " + partitioned_summary[2].partition(" ")[0]  #TODO: check this works
+        partitioned_summary = event['summary'][6:].partition(" ")	
+        event_dictionary['course'] = partitioned_summary[0] + " " + partitioned_summary[2].partition(" ")[0]
     
     def filter_event(self, event):
         return not 'Exam' in event['summary']
