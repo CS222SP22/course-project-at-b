@@ -2,6 +2,7 @@ from icalendar import Calendar
 import requests
 import settings
 from settings import format, tz, date, datefor
+import datetime
 
 
 class CalendarSourceTemplate:
@@ -23,23 +24,36 @@ class CalendarSourceTemplate:
         events = filter(lambda event: any(self.get_event_data(event)), events)
         # we filter out any event that does should not be there according to our filter_event method
         events = filter(self.filter_event, events)
-        # we transform each individual event to a string using our stringify method
-        events_string = map(lambda event: self.stringify_event(event, *self.get_event_data(event)), events)
-        # return our event strings as a list
-        return list(events_string)
+        # we transform each individual event to a dictionary using our generate_event_dictionary method
+        events_dictionary = map(lambda event: self.generate_event_dictionary(event, *self.get_event_data(event)), events)
+        # return our event dictionaries as a list
+
+
+        # just outputting the whole calender, for debugging
+        f = open('output.ics', 'wb')
+        f.write(self.gcal.to_ical())
+        f.close()
+
+        return list(events_dictionary)
     
     # returns the start, end, and return rule for the event parameter
     def get_event_data(self, event):
         # if a start date attribute exists for event, assign it to dtstart
         #   else set dtstart to false to show no start date
         if 'DTSTART' in event:
-            dtstart = event['DTSTART'].dt.astimezone(tz) # assign time in chosen timezone
+            if not isinstance(event['DTSTART'].dt, datetime.datetime):
+                dtstart =  datetime.datetime.combine(event['DTSTART'].dt, datetime.datetime.min.time()).astimezone(tz)
+            else:
+                dtstart = event['DTSTART'].dt.astimezone(tz) # assign time in chosen timezone
         else:
             dtstart = False
         # if an end date attribute exists for event, assign it to dtend
         #   else set dtend to false to show no end date
         if 'DTEND' in event:
-            dtend = event['DTEND'].dt.astimezone(tz) # assign time in chosen timezone
+            if not isinstance(event['DTEND'].dt, datetime.datetime):
+                dtend =  datetime.datetime.combine(event['DTEND'].dt, datetime.datetime.max.time()).astimezone(tz)
+            else:
+                dtend = event['DTEND'].dt.astimezone(tz) # assign time in chosen timezone
         else:
             dtend = False
         # if a repeating rule exists, calculate the next time the rule exists after today
@@ -55,18 +69,27 @@ class CalendarSourceTemplate:
         # return the dates data for the event
         return dtstart, dtend, nextrule
     
-    # return the event's name and the time using stringify_event_name as a helper function
-    def stringify_event(self, event, dtstart, dtend, nextrule):
-        event_name = self.stringify_event_name(event)
-        # if repeating rule does not exist, report start and end dates
-        # else report repeating rule date and end time after rule date
-        if not nextrule:
-            event_timestamp = ("%s to %s" % (dtstart, dtend))
-        else:
+    # generate the values for each of the keys of the event_dictionary
+    def extract_event_info(self, event, event_dictionary):
+        pass
+    
+    # return the event's information as a dicitonary
+    def generate_event_dictionary(self, event, dtstart, dtend, nextrule):
+        event_dictionary = {
+            'name': '',
+            'type': '',
+            'course': ''
+        }
+        # get event properties using extract_event_info helper method helper (for logic that varies class-to-class)
+        self.extract_event_info(event, event_dictionary)
+        # if repeating rule exists, report repeating rule date and end time after rule date
+        if nextrule:
             length = (dtend - dtstart).total_seconds() / 60.0
-            event_timestamp = ("%s to %s" % (nextrule, nextrule + length))
+            dtstart, dtend = nextrule, nextrule + length
 
-        return event_name + ': ' + event_timestamp
+        event_dictionary['timestamp'] = { 'start': dtstart, 'end': dtend }
+        
+        return event_dictionary
 
     # <------------- functions that will be overriden ------------->
 
