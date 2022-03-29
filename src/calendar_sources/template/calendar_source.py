@@ -88,7 +88,7 @@ class CalendarSourceTemplate:
 
         event_dictionary['timestamp'] = { 'start': dtstart, 'end': dtend }
 
-        event_dictionary['source'] = source_name
+        event_dictionary['source'] = self.source_name
         
         return event_dictionary
 
