@@ -6,3 +6,4 @@ output.ics
 output.txt
 ical_links.txt
 *.csv
+*.pyc

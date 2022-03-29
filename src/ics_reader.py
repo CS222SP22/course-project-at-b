@@ -70,6 +70,7 @@ def csvManage(calendars):
     try:
         total_file = open('data/total.csv', 'r')
     except IOError:
+        # TODO: open file as mode rw
         total_file = open('data/total.csv', 'w')
         csv_writer = csv.DictWriter(total_file, fieldnames=fieldnames)
         csv_writer.writeheader()
