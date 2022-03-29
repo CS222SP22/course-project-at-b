@@ -13,7 +13,7 @@ from docopt import docopt
 import sys
 import ics_reader
 
-filename = 'ical_links.txt'
+filename = 'data/ical_links.txt'
 
 def add(link):
     file1 = open(filename, 'a')
@@ -28,10 +28,11 @@ def read():
         print ("Could not open %s, please create file!" % filename)
     else:
         read_lines = ofs.readlines()
-        event_strings = ics_reader.readICal(read_lines)
-        for line in event_strings:
-            # print(line + '\n')
-            print(line)
+        # event_strings = ics_reader.readICal(read_lines)
+        # for line in event_strings:
+        #     # print(line + '\n')
+        #     print(line)
+        ics_reader.csvManage(read_lines);
 
 def main(arguments):
     if arguments['add']:
