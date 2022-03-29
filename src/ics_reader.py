@@ -8,7 +8,6 @@ from pytz import timezone
 import dateutil.rrule as rrule
 
 import csv
-from deepdiff import DeepDiff
 
 import calendar_source_cbtf
 import calendar_source_canvas
