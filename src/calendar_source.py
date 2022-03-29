@@ -3,7 +3,7 @@ import requests
 import settings
 from settings import format, tz, date, datefor
 import datetime
-
+from dateutil.rrule import rrule
 
 class CalendarSourceTemplate:
     # intialize class using constructor
