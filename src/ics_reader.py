@@ -9,46 +9,15 @@ import dateutil.rrule as rrule
 
 import csv
 
-import calendar_source_cbtf
-import calendar_source_canvas
-# from calendar_source_cbtf import Cbtf
-# from calendar_source_canvas import Canvas
-
-"""
-ReadICal(link)
-
-Takes a link and returns a list of strings 
-Each string in the list contains the summary/title, start date, and end date of each event
-"""
-
-def readICal(link, lms):
-    # create empty return value list
-    event_strings = []
-    calendar_sources = []
-
-    if lms == "cbtf":
-        cbtf_source = Cbtf(link)
-        calendar_sources.append(cbtf_source)
-
-    if lms =="canvas":
-        canvas_source = Canvas(link)
-        calendar_sources.append(canvas_source)
-
-    # TODO: similar checks for moodle needed
-
-    for cal_src in calendar_sources:
-        event_strings.append(cal_src.request())
-
-    print(len(event_strings))
-    # return list of events as string
-    return event_strings
+from calendar_source_cbtf import Cbtf
+from calendar_source_canvas import Canvas
 
 """
 csvManage(calendars)
 
-Takes a list of calendar links and writes to CSVs and makes new and old csv files
+Takes a calendar link and lms name and writes to CSVs and makes new and old csv files
 """
-def csvManage(calendars):
+def csvManage(calendar_link, lms):
     # list of new calendar links as dictionaries
     calendar_dictionaries = []
     # fieldnames for csvs
@@ -58,13 +27,14 @@ def csvManage(calendars):
     old_events = []
 
     # iterate through each link in list of links and add dictionaries for each calendar event in calendar_dictionaries
-    for calendar_link in calendars:
-        if "cbtf" in calendar_link:
-            cbtf_source = calendar_source_cbtf.Cbtf(calendar_link)
-            calendar_dictionaries.append(cbtf_source.request())
-        if "canvas" in calendar_link:
-            canvas_source = calendar_source_canvas.Canvas(calendar_link)
-            calendar_dictionaries.append(canvas_source.request())
+    if lms=="cbtf":
+        cbtf_source = Cbtf(calendar_link)
+        calendar_dictionaries.append(cbtf_source.request())
+    if lms=="canvas":
+        canvas_source = Canvas(calendar_link)
+        calendar_dictionaries.append(canvas_source.request())
+
+    # TODO: similar checks for moodle, pl, etc. go here
 
     # open total.csv for reading all old data
     # if file doesn't exist make new file w headers, close file, and reopen file for reading
