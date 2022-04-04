@@ -11,33 +11,35 @@ import csv
 
 import calendar_source_cbtf
 import calendar_source_canvas
+# from calendar_source_cbtf import Cbtf
+# from calendar_source_canvas import Canvas
 
 """
-ReadICal(calendars)
+ReadICal(link)
 
-Takes a list of calendar links and returns a list of strings 
+Takes a link and returns a list of strings 
 Each string in the list contains the summary/title, start date, and end date of each event
 """
-def readICal(calendars):
 
+def readICal(link, lms):
+    # create empty return value list
     event_strings = []
+    calendar_sources = []
 
-    # iterate through each link in list of links
-    for calendar_link in calendars:
-        calendar_sources = []
+    if lms == "cbtf":
+        cbtf_source = Cbtf(link)
+        calendar_sources.append(cbtf_source)
 
-        if "cbtf" in calendar_link:
-            cbtf_source = calendar_source_cbtf.Cbtf(calendar_link)
-            calendar_sources.append(cbtf_source)
-        if "canvas" in calendar_link:
-            canvas_source = calendar_source_canvas.Canvas(calendar_link)
-            calendar_sources.append(canvas_source)
-        
-        # TODO: similar checks for moodle needed
+    if lms =="canvas":
+        canvas_source = Canvas(link)
+        calendar_sources.append(canvas_source)
 
-        for cal_src in calendar_sources:
-            event_strings.append(cal_src.request())
-    
+    # TODO: similar checks for moodle needed
+
+    for cal_src in calendar_sources:
+        event_strings.append(cal_src.request())
+
+    print(len(event_strings))
     # return list of events as string
     return event_strings
 
