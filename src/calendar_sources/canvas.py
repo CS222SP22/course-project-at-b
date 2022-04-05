@@ -16,4 +16,9 @@ class calendar(CalendarSourceTemplate):
     def filter_event(self, event):
         return not 'calendar' in event['UID']
 
+    @staticmethod
+    def matches_source(link):
+        return 'canvas' in link
+
+
 # example (liza's calendar); https://canvas.illinois.edu/feeds/calendars/user_oy5oQZ5fExWwQr7GfvkKebDeZw17GJSB5U3WiQX7.ics

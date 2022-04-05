@@ -24,8 +24,9 @@ def readICal(calendars):
         calendar_source_classes = []
 
         for calendar_source in calendar_sources.__all__:
-            if calendar_source.calendar.source_name in calendar_link:
+            if calendar_source.calendar.matches_source(calendar_link):
                 calendar_source_classes.append(calendar_source.calendar(calendar_link))
+                break
 
         for cal_src in calendar_source_classes:
             # print(cal_src.link)

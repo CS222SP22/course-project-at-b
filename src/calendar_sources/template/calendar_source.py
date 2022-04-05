@@ -102,3 +102,6 @@ class CalendarSourceTemplate:
     def stringify_event_name(self, event):
         return ''
 
+    @staticmethod
+    def matches_source(link):
+        return False

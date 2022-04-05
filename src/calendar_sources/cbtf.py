@@ -13,3 +13,7 @@ class calendar(CalendarSourceTemplate):
     
     def filter_event(self, event):
         return not 'Exam' in event['summary']
+
+    @staticmethod
+    def matches_source(link):
+        return 'cbtf' in link
