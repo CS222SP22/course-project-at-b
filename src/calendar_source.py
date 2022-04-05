@@ -87,7 +87,7 @@ class CalendarSourceTemplate:
             length = (dtend - dtstart).total_seconds() / 60.0
             dtstart, dtend = nextrule, nextrule + length
 
-        # event_dictionary['timestamp'] = { 'start': dtstart, 'end': dtend }
+        event_dictionary['end timestamp'] = f'{dtend.year}/{dtend.month:02d}/{dtend.day:02d}/{dtend.hour:02d}/{dtend.minute:02d}'
 
         # format required; mm/dd/yyyy
         event_dictionary['start date'] = f'{dtstart.month}/{dtstart.day}/{dtstart.year}'     

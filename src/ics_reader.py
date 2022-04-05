@@ -21,7 +21,7 @@ def csvManage(calendar_link, lms):
     # list of new calendar links as dictionaries
     calendar_dictionaries = []
     # fieldnames for csvs
-    fieldnames_ = ['name', 'type', 'course', 'start date', 'end date', 'start date and time', 'end date and time','source_name']
+    fieldnames_ = ['name', 'type', 'course', 'start date', 'end date', 'start date and time', 'end date and time', 'end timestamp', 'source_name']
     # list of dictionaries
     new_data = []
     old_events = []
