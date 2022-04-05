@@ -52,7 +52,6 @@ def csvManage(calendar_link, lms):
     # convert all data in csv DictReader object into a list and close reading file
     csv_reader = csv.DictReader(total_file)
     for dic in csv_reader:
-        print(dic)
         old_events.append(dic)
     total_file.close()
 
@@ -60,8 +59,7 @@ def csvManage(calendar_link, lms):
     for event_dic in calendar_dictionaries[0]:
         found = False
         for old_dic in old_events:
-            # print(old_dic)
-            if event_dic['name'].strip() == old_dic['name'].strip():
+            if event_dic["name"].strip() == old_dic["name"].strip():
                 found = True
         if not found:
             new_data.append(event_dic)    
