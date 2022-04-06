@@ -14,9 +14,10 @@ import sys
 import ics_reader
 import json
 
-filename = 'ical_links.json'
+filename = 'data/ical_links.json'
 
 def add(link, lms):
+	lms = lms.lower()
 	try:
 		open(filename, 'r').close()
 	except IOError:
@@ -57,11 +58,7 @@ def read():
 		data = json.load(ofs)
 		# iterate through links and generate event strings
 		for d in data['links']:
-			#TODO: Pass in the LMS, for the purpose of better filtering.
-			print(d)
-			event_strings = ics_reader.readICal(d['url'], d['lms'])
-			for line in event_strings:
-				print(line)
+		    ics_reader.csvManage(d['url'], d['lms'])
 
 def create_file():
 	data = {'link-count':0, 'links':[]}
