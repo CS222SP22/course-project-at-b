@@ -29,7 +29,7 @@ class CalendarSourceTemplate:
 
 
         # just outputting the whole calender, for debugging
-        f = open('output.ics', 'wb')
+        f = open('data/output.ics', 'wb')
         f.write(self.gcal.to_ical())
         f.close()
 
