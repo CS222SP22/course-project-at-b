@@ -15,6 +15,6 @@ class Moodle(CalendarSourceTemplate):
     def filter_event(self, event):
         return not 'Exam' in event['summary']
 
-if __name__ == '__main__':
-    my_moodle_source = Moodle('https://learn.illinois.edu/calendar/export_execute.php?userid=537403&authtoken=d30326f98ee928652597c810df4a268a7b531b84&preset_what=all&preset_time=custom')
-    print(json.dumps(my_moodle_source.request(), indent=4, default=str))
+# if __name__ == '__main__':
+#     my_moodle_source = Moodle('https://learn.illinois.edu/calendar/export_execute.php?userid=537403&authtoken=d30326f98ee928652597c810df4a268a7b531b84&preset_what=all&preset_time=custom')
+#     print(json.dumps(my_moodle_source.request(), indent=4, default=str))
