@@ -36,6 +36,10 @@ def csvManage(calendar_link, lms):
     if lms=="moodle":
         moodle_source = Moodle(calendar_link)
         calendar_dictionaries.append(moodle_source.request())
+    if lms=="prairielearn":
+        # TODO: implement pl
+        print("needs to be implemented")
+        return
 
     # TODO: similar checks for moodle, pl, etc. go here
 
