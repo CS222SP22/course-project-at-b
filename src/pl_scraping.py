@@ -5,13 +5,8 @@ from webdriver_manager.chrome import ChromeDriverManager
 from seleniumrequests import Chrome
 import time
 from bs4 import BeautifulSoup
-import requests as req
-import re
 
-
-driver = webdriver.Chrome(ChromeDriverManager().install())
-
-with open("secret.txt", "r") as f:
+def getClassLinks(f, driver):
     # Login to PL
     email = f.readline()    
     password = f.readline()    
@@ -30,11 +25,11 @@ with open("secret.txt", "r") as f:
     soup = BeautifulSoup(page_source, 'html.parser')
 
     links = []
-    with open("data/pllinks.txt", "w") as pllinks:
-        # get all links on page
-        for link in soup.find_all('a'):
-            # display the actual urls
-            l = link.get('href')
-            if l.find("course_instance") != -1:
-                links.append("https://www.prairielearn.org" + l)
-        pllinks.write("\n".join(links))
+    # get all links on page
+    for link in soup.find_all('a'):
+        # display the actual urls
+        l = link.get('href')
+        if l.find("course_instance") != -1:
+            links.append("https://www.prairielearn.org" + l)
+
+    return links

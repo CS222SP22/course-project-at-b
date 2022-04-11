@@ -11,7 +11,6 @@ import csv
 
 from calendar_source_cbtf import Cbtf
 from calendar_source_canvas import Canvas
-
 """
 csvManage(calendars)
 
@@ -33,8 +32,6 @@ def csvManage(calendar_link, lms):
     if lms=="canvas":
         canvas_source = Canvas(calendar_link)
         calendar_dictionaries.append(canvas_source.request())
-    if lms=="prairielearn":
-        print("not implemented yet")
 
     # TODO: similar checks for moodle, pl, etc. go here
 
