@@ -10,16 +10,10 @@ Options:
 	--version       Show version.
 '''
 from docopt import docopt
-import sys
 import ics_reader
 import json
 from selenium import webdriver
-from selenium.webdriver.common.keys import Keys
-from selenium.webdriver.common.by import By
 from webdriver_manager.chrome import ChromeDriverManager
-from seleniumrequests import Chrome
-import time
-from bs4 import BeautifulSoup
 from pl_scraping import getClassLinks
 
 filename = 'data/ical_links.json'
