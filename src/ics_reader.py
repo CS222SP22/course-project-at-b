@@ -11,6 +11,7 @@ import csv
 
 from calendar_source_cbtf import Cbtf
 from calendar_source_canvas import Canvas
+from calendar_source_moodle import Moodle
 
 """
 csvManage(calendars)
@@ -33,6 +34,9 @@ def csvManage(calendar_link, lms):
     if lms=="canvas":
         canvas_source = Canvas(calendar_link)
         calendar_dictionaries.append(canvas_source.request())
+    if lms=="moodle":
+        moodle_source = Moodle(calendar_link)
+        calendar_dictionaries.append(moodle_source.request())
 
     # TODO: similar checks for moodle, pl, etc. go here
 
