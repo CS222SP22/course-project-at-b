@@ -12,6 +12,7 @@ import csv
 from calendar_source_cbtf import Cbtf
 from calendar_source_canvas import Canvas
 from calendar_source_moodle import Moodle
+from calendar_source_prairie import Prairie
 
 """
 csvManage(calendars)
@@ -38,23 +39,18 @@ def csvManage(calendar_link, lms):
         calendar_dictionaries.append(moodle_source.request())
     if lms=="prairielearn":
         # TODO: implement pl
+        prairie_source = Prairie(calendar_link)
         print("needs to be implemented")
         return
-
-    # TODO: similar checks for moodle, pl, etc. go here
 
     # open total.csv for reading all old data
     # if file doesn't exist make new file w headers, close file, and reopen file for reading
     try:
         total_file = open('data/total.csv', 'r')
     except IOError:
-        # TODO: open file as mode rw
-        # TODO: this is breaking anyways, makes the value the key
-        total_file = open('data/total.csv', 'w')
+        total_file = open('data/total.csv', '+')
         csv_writer = csv.DictWriter(total_file, fieldnames=fieldnames_)
         csv_writer.writeheader()
-        total_file.close()
-        total_file = open('data/total.csv', 'r')
 
     # convert all data in csv DictReader object into a list and close reading file
     csv_reader = csv.DictReader(total_file)
