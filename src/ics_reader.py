@@ -105,6 +105,7 @@ def convertToTodoistFormat(notion_new_data):
         description = old_format_dict['course']
         if old_format_dict['start date and time']!= old_format_dict['end date and time']:
             description += f', Start date: {old_format_dict["start date and time"]}'
+        description += f', Task Source LMS: {old_format_dict["source_name"]}'
 
         new_format_dict = {
             'TYPE': 'task', #different for quizzes? (after we fix sorting in canvas)
