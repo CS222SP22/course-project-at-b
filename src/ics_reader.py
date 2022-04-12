@@ -6,7 +6,8 @@ import requests
 from icalendar import Calendar, Event, vDatetime
 from pytz import timezone
 import dateutil.rrule as rrule
-
+from selenium import webdriver
+from webdriver_manager.chrome import ChromeDriverManager
 import csv
 
 from calendar_source_cbtf import Cbtf
@@ -40,8 +41,8 @@ def csvManage(calendar_link, lms, new_csv):
     if lms=="prairielearn":
         # TODO: implement pl
         prairie_source = Prairie(calendar_link)
-        # driver = webdriver.Chrome(ChromeDriverManager().install())
-        # calendar_dictionaries.append(prairie_source.request(open("data/secret.txt", "r"), driver))
+        driver = webdriver.Chrome(ChromeDriverManager().install())
+        calendar_dictionaries.append(prairie_source.request(open("data/secret.txt", "r"), driver))
         return
 
     # open total.csv for reading all old data

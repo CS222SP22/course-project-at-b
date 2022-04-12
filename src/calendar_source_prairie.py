@@ -22,17 +22,30 @@ class Prairie(CalendarSourceTemplate):
         email = f.readline()    
         password = f.readline()    
         driver.get(self.link)
-        driver.find_element(By.LINK_TEXT, "Log in").click()
-        time.sleep(5) 
-        driver.find_element(By.LINK_TEXT, "Sign in with Illinois").click()
-        time.sleep(5) 
-        driver.find_element(By.ID, "userNameInput").send_keys(email + Keys.ENTER)
-        time.sleep(5) 
-        driver.find_element(By.ID, "passwordInput").send_keys(password + Keys.ENTER)
-        time.sleep(5) 
+        # driver.find_element(By.LINK_TEXT, "Log in").click()
+        # time.sleep(5) 
+        # driver.find_element(By.LINK_TEXT, "Sign in with Illinois").click()
+        # time.sleep(5) 
+        # driver.find_element(By.ID, "userNameInput").send_keys(email + Keys.ENTER)
+        # time.sleep(5) 
+        # driver.find_element(By.ID, "passwordInput").send_keys(password + Keys.ENTER)
+        # time.sleep(5) 
 
         # Webscrape PL
         page_source = driver.page_source
         soup = BeautifulSoup(page_source, 'html.parser')
+
+        assignments = []
+        # get data on page
+        for assignment in soup.find_all('td'):
+            # display the actual urls
+            # ass = assignment.get('href')
+            # if ass.find("course_instance") != -1:
+                # assignments.append("https://www.prairielearn.org" + ass)
+            assignments.append(assignment)
+        
+        test_file = open("data/" + self.link[48:] + ".txt", "w")
+
+        test_file.write("\n".join(assignments))
 
         return True
