@@ -46,7 +46,7 @@ def csvManage(calendar_link, lms):
         total_file = open('data/total.csv', 'r')
     except IOError:
         # TODO: open file as mode rw
-        # TODO: this is breaking anyways, makes the value the key
+        # TODO: this is breaking when re-writing files, makes the value the key
         total_file = open('data/total.csv', 'w')
         csv_writer = csv.DictWriter(total_file, fieldnames=fieldnames_)
         csv_writer.writeheader()
@@ -85,3 +85,34 @@ def csvManage(calendar_link, lms):
     # close files
     total_file.close()
     new_file.close()
+
+    # check for if the user wants todoist format goes here
+    convertToTodoistFormat(new_data)
+
+# TODO: figure out how to call this dependent on user's selected output. maybe make old new-data only if they select notion/default, this if they select todoist, so that only one new data is outputted makes it easier for automation
+def convertToTodoistFormat(notion_new_data):
+    todoist_field_names = ['TYPE','CONTENT', 'DESCRIPTION', 'DATE','DATE_LANG']
+    todoist_new_file = open('data/todoist_new_data.csv', mode = 'w')
+    todoist_writer = csv.DictWriter(todoist_new_file, fieldnames=todoist_field_names)
+
+    todoist_writer.writeheader()
+
+    # convert notion's format to todoist format, following these guidelines; https://todoist.com/help/articles/how-to-format-your-csv-file-so-you-can-import-it-into-todoist
+    for old_format_dict in notion_new_data:
+
+        # todoist doesn’t support start dates, so i’m adding it to the description instead
+        # lmao turns out this doesn't even matter
+        description = old_format_dict['course']
+        if old_format_dict['start date and time']!= old_format_dict['end date and time']:
+            description += f', Start date: {old_format_dict["start date and time"]}'
+
+        new_format_dict = {
+            'TYPE': 'task', #different for quizzes? (after we fix sorting in canvas)
+            'CONTENT': old_format_dict['name'],            
+            'DESCRIPTION': description,
+            'DATE': old_format_dict['end date'], 
+            'DATE_LANG': 'en'
+        }
+        todoist_writer.writerow(new_format_dict)
+
+    todoist_new_file.close()
