@@ -2,7 +2,7 @@
 
 Usage:
 	ics.py add <link> <lms>
-	ics.py read
+	ics.py read [notion | todoist]
 	ics.py (-h | --help)
 
 Options:
@@ -14,7 +14,7 @@ import sys
 import ics_reader
 import json
 
-filename = 'data/ical_links.json'
+filename = 'data/user_input.json'
 
 def add(link, lms):
 	lms = lms.lower()
@@ -48,7 +48,7 @@ def add(link, lms):
 	
 	print('Added Link to Source File')
 
-def read(): 
+def read(output_option): 
 	try:
 		ofs = open(filename, 'r')
 	except IOError:
@@ -58,7 +58,7 @@ def read():
 		data = json.load(ofs)
 		# iterate through links and generate event strings
 		for d in data['links']:
-		    ics_reader.csvManage(d['url'], d['lms'])
+		    ics_reader.csvManage(d['url'], d['lms'], output_option)
 
 def create_file():
 	data = {'link-count':0, 'links':[]}
@@ -69,7 +69,8 @@ def main(arguments):
 	if arguments['add']:
 		add(arguments['<link>'], arguments['<lms>'])
 	elif arguments['read']:
-		read()
+		output_option = 'todoist' if arguments['todoist'] else 'notion'
+		read(output_option)
 
 if __name__ == '__main__':
 	arguments = docopt(__doc__, version='ics.py 1.0')

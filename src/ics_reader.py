@@ -18,7 +18,7 @@ csvManage(calendars)
 
 Takes a calendar link and lms name and writes to CSVs and makes new and old csv files
 """
-def csvManage(calendar_link, lms):
+def csvManage(calendar_link, lms, output_option):
     # list of new calendar links as dictionaries
     calendar_dictionaries = []
     # fieldnames for csvs
@@ -38,7 +38,7 @@ def csvManage(calendar_link, lms):
         moodle_source = Moodle(calendar_link)
         calendar_dictionaries.append(moodle_source.request())
 
-    # TODO: similar checks for moodle, pl, etc. go here
+    # TODO: similar checks for pl, etc. go here
 
     # open total.csv for reading all old data
     # if file doesn't exist make new file w headers, close file, and reopen file for reading
@@ -68,31 +68,28 @@ def csvManage(calendar_link, lms):
         if not found:
             new_data.append(event_dic)    
     
-    # open files for writing or appending and initialize DictWriter objects
+
+    # updated total data file:
     total_file = open('data/total.csv', mode='a')
-    new_file = open('data/new_data.csv', mode='w')
-    csv_writer = csv.DictWriter(total_file, fieldnames=fieldnames_)
-    new_writer = csv.DictWriter(new_file, fieldnames=fieldnames_)
-
-    # write headers to new data file
-    new_writer.writeheader()
-
-    # write all new data to files
+    total_writer = csv.DictWriter(total_file, fieldnames=fieldnames_)
     for dic in new_data:
-        csv_writer.writerow(dic)
-        new_writer.writerow(dic)
-
-    # close files
+        total_writer.writerow(dic)
     total_file.close()
-    new_file.close()
+    
+    # update new data file, format dependent on user's output option
+    if output_option=='notion':
+        new_file = open('data/new_data.csv', mode='w')
+        new_writer = csv.DictWriter(new_file, fieldnames=fieldnames_)
+        new_writer.writeheader()
+        for dic in new_data:
+            new_writer.writerow(dic)
+        new_file.close()
+    elif output_option=='todoist':
+        convertToTodoistFormat(new_data)
 
-    # check for if the user wants todoist format goes here
-    convertToTodoistFormat(new_data)
-
-# TODO: figure out how to call this dependent on user's selected output. maybe make old new-data only if they select notion/default, this if they select todoist, so that only one new data is outputted makes it easier for automation
 def convertToTodoistFormat(notion_new_data):
     todoist_field_names = ['TYPE','CONTENT', 'DESCRIPTION', 'DATE','DATE_LANG']
-    todoist_new_file = open('data/todoist_new_data.csv', mode = 'w')
+    todoist_new_file = open('data/todoist_new_data.csv', mode = 'w')                #TODO: change this name to just new_data?
     todoist_writer = csv.DictWriter(todoist_new_file, fieldnames=todoist_field_names)
 
     todoist_writer.writeheader()
