@@ -42,15 +42,17 @@ class Prairie(CalendarSourceTemplate):
 
         assignments = []
         # get data on page
-        for assignment in soup.find_all(['td']):
-            # display the actual urls
-            # ass = assignment.get('href')
-            # if ass.find("course_instance") != -1:
-                # assignments.append("https://www.prairielearn.org" + ass)
-            assignments.append(assignment.get_text())
+        for assignment in soup.find_all(['tr']):
+            assign = []
+            for attr in assignment.find_all(['td']):
+                assign.append(attr.get_text().strip())
+            if len(assign) > 0:
+                assignments.append(assign[:len(assign)-1])
         
         test_file = open("data/" + self.link[48:] + ".txt", "w")
 
-        test_file.write("\n".join(assignments))
+        for assign in assignments:
+            test_file.write("\n".join(assign))
+            test_file.write("\n===================\n")
 
         return True
