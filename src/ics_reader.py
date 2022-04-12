@@ -18,7 +18,7 @@ from calendar_source_prairie import Prairie
 csvManage(calendars)
 Takes a calendar link and lms name and writes to CSVs and makes new and old csv files
 """
-def csvManage(calendar_link, lms):
+def csvManage(calendar_link, lms, new_csv):
     # list of new calendar links as dictionaries
     calendar_dictionaries = []
     # fieldnames for csvs
@@ -40,7 +40,8 @@ def csvManage(calendar_link, lms):
     if lms=="prairielearn":
         # TODO: implement pl
         prairie_source = Prairie(calendar_link)
-        print("needs to be implemented")
+        # driver = webdriver.Chrome(ChromeDriverManager().install())
+        # calendar_dictionaries.append(prairie_source.request(open("data/secret.txt", "r"), driver))
         return
 
     # open total.csv for reading all old data
@@ -69,7 +70,10 @@ def csvManage(calendar_link, lms):
     
     # open files for writing or appending and initialize DictWriter objects
     total_file = open('data/total.csv', mode='a')
-    new_file = open('data/new_data.csv', mode='w')
+    if new_csv:
+        new_file = open('data/new_data.csv', mode='w')
+    else:
+        new_file = open('data/new_data.csv', mode='a')
     csv_writer = csv.DictWriter(total_file, fieldnames=fieldnames_)
     new_writer = csv.DictWriter(new_file, fieldnames=fieldnames_)
 

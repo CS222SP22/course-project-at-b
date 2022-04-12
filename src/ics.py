@@ -68,8 +68,10 @@ def read():
 	else:
 		data = json.load(ofs)
 		# iterate through links and generate event strings
+		new_csv = True
 		for d in data['links']:
-		    ics_reader.csvManage(d['url'], d['lms'])
+			ics_reader.csvManage(d['url'], d['lms'], new_csv)
+			new_csv = False
 
 def create_file():
 	data = {'link-count':0, 'links':[]}
