@@ -94,7 +94,7 @@ class CalendarSourceTemplate:
 
         # format (arbitrarily decided): Time Day date. Month Year
         event_dictionary['start date and time'] = dtstart.strftime("%I:%M%p %A, %d. %B")
-        event_dictionary['end date and time'] = dtstart.strftime("%I:%M%p %A, %d. %B")
+        event_dictionary['end date and time'] = dtend.strftime("%I:%M%p %A, %d. %B")
 
         return event_dictionary
 
