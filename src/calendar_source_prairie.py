@@ -3,10 +3,11 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
 import time
 from bs4 import BeautifulSoup
-from scrapingant_client import ScrapingAntClient
+from datetime import datetime, date
 
 class Prairie(CalendarSourceTemplate):
     def extract_event_info(self, event, event_dictionary):
+
         event_dictionary['source_name'] = "prairielearn"
 
         event_dictionary['name'] = "TBD"
@@ -16,7 +17,7 @@ class Prairie(CalendarSourceTemplate):
         event_dictionary['course'] = "TBD"
     
     def filter_event(self, event):
-        return True
+        return "instance #" in event[2] or event[2] == "None"
     
     def request(self, f, driver):
         # Login to PL
@@ -51,8 +52,35 @@ class Prairie(CalendarSourceTemplate):
         
         test_file = open("data/" + self.link[48:] + ".txt", "w")
 
+        assignments_list = []
+
         for assign in assignments:
+            if "instance #" in assign[2] or assign[2] == "None" or "Assessment closed" in assign[2]:
+                continue
+                
             test_file.write("\n".join(assign))
             test_file.write("\n===================\n")
 
-        return True
+            time_str = assign[2][assign[2].find("until ") + len("until "):]
+            index = time_str.find(",")
+            substr = time_str[index: index + 5]
+            time_str = time_str.replace(substr, '')
+            time_str = time_str + " " + str(date.today().year)
+
+            time_obj = datetime.strptime(time_str, '%H:%M, %b %d %Y')
+
+            event_dictionary = {
+                    'name': assign[0] + ": " + assign[1],
+                    'type': 'Needs to be manually sorted',
+                    'course': 'Need to do', # TODO: get class
+                    "start date": '',
+                    "end date": time_obj,
+                    "start date and time": '',
+                    "end date and time": time_obj,
+                    "end timestamp": '',
+                    "source_name": "prairielearn"
+            }
+
+            assignments_list.append(event_dictionary)
+
+        return assignments_list
