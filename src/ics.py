@@ -13,6 +13,8 @@ from docopt import docopt
 import sys
 import ics_reader
 
+from notion import send_to_notion
+
 filename = 'ical_links.txt'
 
 def add(link):
@@ -31,7 +33,8 @@ def read():
         event_strings = ics_reader.readICal(read_lines)
         for line in event_strings:
             # print(line + '\n')
-            print(line)
+            # print(line)
+            send_to_notion(line)
 
 def main(arguments):
     if arguments['add']:
