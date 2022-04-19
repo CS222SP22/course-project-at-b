@@ -6,15 +6,20 @@ from dateutil.rrule import rrule
 
 class CalendarSourceTemplate:
     # intialize class using constructor
-    def __init__(self, link):
+    def __init__(self, link, testing=False, filepath=""):
         self.link = link
+        self.filepath = filepath
     
     # main process for class, returns a string of events
     def request(self):
         # make request to the link and load downloaded file
-        r = requests.get(self.link)
+        if (testing):
+            with open(filepath, "r") as f:
+                text = f.read()
+        else:
+            text = requests.get(self.link).text
         # populate an ical object using text from downloaded file
-        self.gcal = Calendar.from_ical(r.text)
+        self.gcal = Calendar.from_ical(text)
         # each event in ical files start with "VEVENT"
         # so walk through ical file and parse an event at every instance of "VEVENT"
         events = self.gcal.walk('VEVENT')
