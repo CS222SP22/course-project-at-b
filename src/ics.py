@@ -56,9 +56,9 @@ def read(output_option):
 		print('Unable to find file, creating it!')
 	else:
 		data = json.load(ofs)
+		
 		# iterate through links and generate event strings
-		for d in data['links']:
-		    ics_reader.csvManage(d['url'], d['lms'], output_option)
+		ics_reader.csvManage(data['links'], output_option)
 
 def create_file():
 	data = {'link-count':0, 'links':[]}
