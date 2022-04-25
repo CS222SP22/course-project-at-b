@@ -43,22 +43,22 @@ def csvManage(calendar_link, lms, new_csv):
         prairie_source = Prairie(calendar_link)
         driver = webdriver.Chrome(ChromeDriverManager().install())
         calendar_dictionaries.append(prairie_source.request(open("data/secret.txt", "r"), driver))
-        return
 
     # open total.csv for reading all old data
     # if file doesn't exist make new file w headers, close file, and reopen file for reading
     try:
         total_file = open('data/total.csv', 'r')
     except IOError:
-        total_file = open('data/total.csv', '+')
+        total_file = open('data/total.csv', 'w')
         csv_writer = csv.DictWriter(total_file, fieldnames=fieldnames_)
         csv_writer.writeheader()
-
-    # convert all data in csv DictReader object into a list and close reading file
-    csv_reader = csv.DictReader(total_file)
-    for dic in csv_reader:
-        old_events.append(dic)
-    total_file.close()
+    else:
+        # convert all data in csv DictReader object into a list and close reading file
+        csv_reader = csv.DictReader(total_file)
+        for dic in csv_reader:
+            old_events.append(dic)
+    finally:
+        total_file.close()
 
     # check if each new event exists in the old data and add it to new_data if not found
     for event_dic in calendar_dictionaries[0]:

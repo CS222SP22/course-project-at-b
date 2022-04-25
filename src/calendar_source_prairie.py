@@ -16,8 +16,8 @@ class Prairie(CalendarSourceTemplate):
 
         event_dictionary['course'] = "TBD"
     
-    def filter_event(self, event):
-        return "instance #" in event[2] or event[2] == "None"
+    def filter_event(self, assign):
+        return "instance #" in assign[2] or assign[2] == "None" or "Assessment closed" in assign[2]
     
     def request(self, f, driver):
         # Login to PL
@@ -41,6 +41,9 @@ class Prairie(CalendarSourceTemplate):
         page_source = driver.page_source
         soup = BeautifulSoup(page_source, 'html.parser')
 
+        spans = soup.find_all('span', {'class' : 'navbar-text'})
+        this_class = [span.get_text() for span in spans]
+
         assignments = []
         # get data on page
         for assignment in soup.find_all(['tr']):
@@ -55,29 +58,26 @@ class Prairie(CalendarSourceTemplate):
         assignments_list = []
 
         for assign in assignments:
-            if "instance #" in assign[2] or assign[2] == "None" or "Assessment closed" in assign[2]:
+            if self.filter_event(assign):
                 continue
-                
-            test_file.write("\n".join(assign))
-            test_file.write("\n===================\n")
 
             time_str = assign[2][assign[2].find("until ") + len("until "):]
             index = time_str.find(",")
             substr = time_str[index: index + 5]
             time_str = time_str.replace(substr, '')
-            time_str = time_str + " " + str(date.today().year)
+            time_str_formatted = time_str + " " + str(date.today().year)
 
-            time_obj = datetime.strptime(time_str, '%H:%M, %b %d %Y')
+            time_obj = datetime.strptime(time_str_formatted, '%H:%M, %b %d %Y')
 
             event_dictionary = {
                     'name': assign[0] + ": " + assign[1],
                     'type': 'Needs to be manually sorted',
-                    'course': 'Need to do', # TODO: get class
+                    'course': this_class[0],
                     "start date": '',
                     "end date": time_obj,
                     "start date and time": '',
                     "end date and time": time_obj,
-                    "end timestamp": '',
+                    "end timestamp": time_str,
                     "source_name": "prairielearn"
             }
 
