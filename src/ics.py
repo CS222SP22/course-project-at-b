@@ -10,9 +10,11 @@ Options:
 	--version       Show version.
 '''
 from docopt import docopt
-import sys
 import ics_reader
 import json
+from selenium import webdriver
+from webdriver_manager.chrome import ChromeDriverManager
+from pl_scraping import getClassLinks
 
 filename = 'data/ical_links.json'
 
@@ -39,14 +41,23 @@ def add(link, lms):
 			return
 
 	# value doesn't already exist, hence adding to list of LMSes
-	data['links'].append({'url':link, 'lms': lms})
-	data['link-count'] += 1
+
+	# if lms is prairielearn, get links first
+	if lms=="prairielearn":
+		driver = webdriver.Chrome(ChromeDriverManager().install())
+		pl_links = getClassLinks(open("data/secret.txt", "r"), driver)
+		for link in pl_links:
+			data['links'].append({'url':link, 'lms': lms})
+			data['link-count'] += 1
+	else:
+		data['links'].append({'url':link, 'lms': lms})
+		data['link-count'] += 1
 	
 	# writing back to json file
 	with open(filename, 'w') as f:
 		json.dump(data, f)
 	
-	print('Added Link to Source File')
+	print('Added Link(s) to Source File')
 
 def read(): 
 	try:
@@ -57,8 +68,10 @@ def read():
 	else:
 		data = json.load(ofs)
 		# iterate through links and generate event strings
+		new_csv = True
 		for d in data['links']:
-		    ics_reader.csvManage(d['url'], d['lms'])
+			ics_reader.csvManage(d['url'], d['lms'], new_csv)
+			new_csv = False
 
 def create_file():
 	data = {'link-count':0, 'links':[]}

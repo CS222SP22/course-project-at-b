@@ -16,4 +16,3 @@ class Canvas(CalendarSourceTemplate):
     def filter_event(self, event):
         return not 'calendar' in event['UID']
 
-# example (liza's calendar); https://canvas.illinois.edu/feeds/calendars/user_oy5oQZ5fExWwQr7GfvkKebDeZw17GJSB5U3WiQX7.ics

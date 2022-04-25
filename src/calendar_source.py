@@ -1,6 +1,5 @@
 from icalendar import Calendar
 import requests
-import settings
 from settings import format, tz, date, datefor
 import datetime
 from dateutil.rrule import rrule
@@ -30,7 +29,7 @@ class CalendarSourceTemplate:
 
 
         # just outputting the whole calender, for debugging
-        f = open('output.ics', 'wb')
+        f = open('data/output.ics', 'wb')
         f.write(self.gcal.to_ical())
         f.close()
 
