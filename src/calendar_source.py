@@ -27,12 +27,6 @@ class CalendarSourceTemplate:
         events_dictionary = map(lambda event: self.generate_event_dictionary(event, *self.get_event_data(event)), events)
         # return our event dictionaries as a list
 
-
-        # just outputting the whole calender, for debugging
-        f = open('data/output.ics', 'wb')
-        f.write(self.gcal.to_ical())
-        f.close()
-
         return list(events_dictionary)
     
     # returns the start, end, and return rule for the event parameter
@@ -94,7 +88,7 @@ class CalendarSourceTemplate:
 
         # format (arbitrarily decided): Time Day date. Month Year
         event_dictionary['start date and time'] = dtstart.strftime("%I:%M%p %A, %d. %B")
-        event_dictionary['end date and time'] = dtstart.strftime("%I:%M%p %A, %d. %B")
+        event_dictionary['end date and time'] = dtend.strftime("%I:%M%p %A, %d. %B")
 
         return event_dictionary
 
@@ -107,4 +101,3 @@ class CalendarSourceTemplate:
     # return the event's name using the string object
     def stringify_event_name(self, event):
         return ''
-

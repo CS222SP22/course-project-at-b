@@ -2,7 +2,7 @@
 
 Usage:
 	ics.py add <link> <lms>
-	ics.py read
+	ics.py read [notion | todoist]
 	ics.py (-h | --help)
 
 Options:
@@ -17,7 +17,7 @@ from selenium import webdriver
 from webdriver_manager.chrome import ChromeDriverManager
 from pl_scraping import getClassLinks
 
-filename = 'data/ical_links.json'
+filename = 'data/user_input.json'
 
 def add(link, lms):
 	lms = lms.lower()
@@ -59,7 +59,7 @@ def add(link, lms):
 	
 	print('Added Link(s) to Source File')
 
-def read(): 
+def read(output_option): 
 	try:
 		ofs = open(filename, 'r')
 	except IOError:
@@ -67,12 +67,9 @@ def read():
 		print('Unable to find file, creating it!')
 	else:
 		data = json.load(ofs)
-
+		
 		# iterate through links and generate event strings
-		new_csv = True
-		for d in data['links']:
-			ics_reader.csvManage(d['url'], d['lms'], new_csv)
-			new_csv = False
+		ics_reader.csvManage(data['links'], output_option)
 
 def create_file():
 	data = {'link-count':0, 'links':[]}
