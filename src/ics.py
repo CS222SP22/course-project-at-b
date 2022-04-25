@@ -10,6 +10,7 @@ Options:
 	--version       Show version.
 '''
 from docopt import docopt
+import sys
 import ics_reader
 import json
 from selenium import webdriver
@@ -41,7 +42,6 @@ def add(link, lms):
 			return
 
 	# value doesn't already exist, hence adding to list of LMSes
-
 	# if lms is prairielearn, get links first
 	if lms=="prairielearn":
 		driver = webdriver.Chrome(ChromeDriverManager().install())
@@ -67,6 +67,7 @@ def read():
 		print('Unable to find file, creating it!')
 	else:
 		data = json.load(ofs)
+
 		# iterate through links and generate event strings
 		new_csv = True
 		for d in data['links']:
@@ -82,7 +83,8 @@ def main(arguments):
 	if arguments['add']:
 		add(arguments['<link>'], arguments['<lms>'])
 	elif arguments['read']:
-		read()
+		output_option = 'todoist' if arguments['todoist'] else 'notion'
+		read(output_option)
 
 if __name__ == '__main__':
 	arguments = docopt(__doc__, version='ics.py 1.0')
