@@ -52,9 +52,7 @@ class Prairie(CalendarSourceTemplate):
                 assign.append(attr.get_text().strip())
             if len(assign) > 0:
                 assignments.append(assign[:len(assign)-1])
-        
-        test_file = open("data/" + self.link[48:] + ".txt", "w")
-
+    
         assignments_list = []
 
         for assign in assignments:

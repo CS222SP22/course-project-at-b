@@ -76,7 +76,6 @@ def csvManage(calendar_links, output_option):   # CHANGE THIS SHOULD ONLY BE CAL
     # check if each new event exists in the old data and add it to new_data if not found
     for dictionary in calendar_dictionaries:
         for event_dic in dictionary:
-            print(event_dic)
             found = False
             for old_dic in old_events:
                 if event_dic["name"].strip() == old_dic["name"].strip():
