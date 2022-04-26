@@ -1,11 +1,16 @@
-venv/
-src/__pycache__/
-__pycache__/
-user_input*
-output.ics
-output.txt
-*.csv
-*.pyc
-*.txt
+# /!tests
+# user_input*
+# output.ics
+# output.txt
+# *.csv
+# *.pyc
+# *.txt
+
 data/*
 !data/.gitkeep
+src/__pycache__/
+__pycache__/
+
+venv/
+
+secret.txt

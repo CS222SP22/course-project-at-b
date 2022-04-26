@@ -1,0 +1,19 @@
+BEGIN:VCALENDAR
+VERSION:2.0 PRODID:-//sebbo.net//ical-generator//EN
+URL:https://cbtf.engr.illinois.edu/sched/icalendar/e4b52a70-de49-4c9b-a6d9 -1ae8b2be759f
+METHOD:PUBLISH
+NAME:CBTF reservations
+X-WR-CALNAME:CBTF reservations
+REFRESH-INTERVAL;VALUE=DURATION:PT30M
+X-PUBLISHED-TTL:PT30M
+BEGIN:VEVENT
+UID:https://cbtf.engr.illinois.edu/sched/user/3664215/reserve/4388@cbtf.en gr.illinois.edu
+SEQUENCE:5
+DTSTAMP:20220120T140000Z
+DTSTART:20220126T220000Z
+DTEND:20220126T225000Z
+SUMMARY:CBTF: CS 233 Quiz 1 LOCATION:057 Grainger Library
+DESCRIPTION:Visit https://cbtf.engr.illinois.edu/sched/ to confirm\, add\, or change reservations.\n1/26/2022 - 1/28/2022\nsequence 5 URL;VALUE=URI:https://cbtf.engr.illinois.edu/sched/
+LAST-MODIFIED:20220124T181437Z
+END:VEVENT
+END:VCALENDAR
