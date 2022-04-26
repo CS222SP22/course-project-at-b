@@ -1,0 +1,20 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:icalendar-ruby
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+X-WR-CALNAME:Aydan Pirani Calendar (Canvas)
+X-WR-CALDESC:Calendar events for the user\, Aydan Pirani
+BEGIN:VEVENT
+DTSTAMP:20220112T151500Z
+UID:event-calendar-event-45293
+DTSTART:20220328T130000Z
+DTEND:20220328T170000Z
+CLASS:PUBLIC
+LOCATION:0035 CIF
+SEQUENCE:0
+SUMMARY:18 Pipeline Cycle Counting Review Session [cs_233_120221_213565]
+URL:https://canvas.illinois.edu/calendar?include_contexts=course_18018&mont
+ h=03&year=2022#calendar_event_45293
+END:VEVENT
+END:VCALENDAR
