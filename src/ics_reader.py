@@ -37,7 +37,7 @@ def csvManage(calendar_links, output_option):   # CHANGE THIS SHOULD ONLY BE CAL
             cbtf_source = Cbtf(calendar_link)
             calendar_dictionaries.append(cbtf_source.request())
         if lms=="canvas":
-            canvas_source = Canvas(calendar_link)
+            canvas_source = Cbtf(calendar_link)
             calendar_dictionaries.append(canvas_source.request())
         if lms=="moodle":
             moodle_source = Moodle(calendar_link)

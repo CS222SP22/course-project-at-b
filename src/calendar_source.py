@@ -8,30 +8,34 @@ class CalendarSourceTemplate:
     # intialize class using constructor
     def __init__(self, link, testing=False, filepath=""):
         self.link = link
+        self.testing = testing
         self.filepath = filepath
     
     # main process for class, returns a string of events
     def request(self):
         # make request to the link and load downloaded file
-        if (testing):
-            with open(filepath, "r") as f:
-                text = f.read()
+        if (self.testing):
+           with open(self.filepath, "r") as f:
+               text = f.read()
         else:
             text = requests.get(self.link).text
+
         # populate an ical object using text from downloaded file
         self.gcal = Calendar.from_ical(text)
         # each event in ical files start with "VEVENT"
         # so walk through ical file and parse an event at every instance of "VEVENT"
         events = self.gcal.walk('VEVENT')
-        # parse each event to get its datatypes
-        # if event does not have datatypes we should report, we filter them out
-        events = filter(lambda event: any(self.get_event_data(event)), events)
-        # we filter out any event that does should not be there according to our filter_event method
-        events = filter(self.filter_event, events)
-        # we transform each individual event to a dictionary using our generate_event_dictionary method
+
+        if not self.testing:
+            # parse each event to get its datatypes
+            # if event does not have datatypes we should report, we filter them out
+            events = list(filter(lambda event: any(self.get_event_data(event)) or not self.get_event_data(event)[-1], events))
+            # we filter out any event that does should not be there according to our filter_event method
+            events = list(filter(self.filter_event, events))
+            # we transform each individual event to a dictionary using our generate_event_dictionary method
+        
         events_dictionary = map(lambda event: self.generate_event_dictionary(event, *self.get_event_data(event)), events)
         # return our event dictionaries as a list
-
         return list(events_dictionary)
     
     # returns the start, end, and return rule for the event parameter
