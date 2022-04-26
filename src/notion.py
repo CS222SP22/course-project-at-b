@@ -7,7 +7,7 @@ def send_to_notion(assignments):
 
         payload = json.dumps({
             'parent': {
-                'database_id': '6a7eb96f-88a4-4cad-9dd0-821e691834ab'
+                'database_id': '6a7eb96f88a44cad9dd0821e691834ab'
             },
             'properties': {
                 'name': {
@@ -45,7 +45,7 @@ def send_to_notion(assignments):
         })
 
         headers = {
-            'Authorization': 'Bearer secret_UYq6njw7326NBg52vqklmxmVpZkj1QXRt5cvAKLqaaW',
+            'Authorization': 'Bearer secret_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx',
             'Content-Type': 'application/json',
             'Notion-Version': '2021-08-16'
         }
