@@ -44,6 +44,15 @@ def add(link, lms):
 	# value doesn't already exist, hence adding to list of LMSes
 	# if lms is prairielearn, get links first
 	if lms=="prairielearn":
+		try:
+			open("data/secret.txt", 'r').close()
+		except IOError:
+			secrets_file = open("data/secret.txt", 'w')
+			username = input("Please Enter Your School Email: ")
+			password = input("Please Enter Your Self-Service Password: ")
+			secrets_file.write(username + "\n" + password)
+			secrets_file.close()
+		
 		driver = webdriver.Chrome(ChromeDriverManager().install())
 		pl_links = getClassLinks(open("data/secret.txt", "r"), driver)
 		for link in pl_links:
