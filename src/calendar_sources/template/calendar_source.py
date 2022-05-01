@@ -1,8 +1,9 @@
 from icalendar import Calendar
 import requests
 from .settings import format, tz, date, datefor
+# from settings import format, tz, date, datefor
 import datetime
-
+from dateutil.rrule import rrule
 
 class CalendarSourceTemplate:
     # intialize class using constructor
@@ -26,12 +27,6 @@ class CalendarSourceTemplate:
         # we transform each individual event to a dictionary using our generate_event_dictionary method
         events_dictionary = map(lambda event: self.generate_event_dictionary(event, *self.get_event_data(event)), events)
         # return our event dictionaries as a list
-
-
-        # just outputting the whole calender, for debugging
-        f = open('output.ics', 'wb')
-        f.write(self.gcal.to_ical())
-        f.close()
 
         return list(events_dictionary)
     
@@ -86,9 +81,17 @@ class CalendarSourceTemplate:
             length = (dtend - dtstart).total_seconds() / 60.0
             dtstart, dtend = nextrule, nextrule + length
 
-        event_dictionary['timestamp'] = { 'start': dtstart, 'end': dtend }
+        event_dictionary['source_name'] = self.source_name
+        
+        event_dictionary['end timestamp'] = f'{dtend.year}/{dtend.month:02d}/{dtend.day:02d}/{dtend.hour:02d}/{dtend.minute:02d}'
 
-        event_dictionary['source'] = self.source_name
+        # format required; mm/dd/yyyy
+        event_dictionary['start date'] = f'{dtstart.month}/{dtstart.day}/{dtstart.year}'     
+        event_dictionary['end date'] = f'{dtend.month}/{dtend.day}/{dtend.year}'
+
+        # format (arbitrarily decided): Time Day date. Month Year
+        event_dictionary['start date and time'] = dtstart.isoformat()
+        event_dictionary['end date and time'] = dtend.isoformat()
         
         return event_dictionary
 

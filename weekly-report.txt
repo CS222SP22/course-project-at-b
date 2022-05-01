@@ -1,0 +1,5 @@
+Moodle doesn't work with UUIDs
+Need to use keywords for moodle
+Potential python synonyms tokenizer?
+Deep learning model may be fun to play around with long term
+Need to use Moodle "all events", courses alone aren't enoug:
