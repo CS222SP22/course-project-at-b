@@ -1,9 +1,9 @@
-from .template.calendar_source import CalendarSourceTemplate
+from calendar_source import CalendarSourceTemplate
 
-class calendar(CalendarSourceTemplate):
-    source_name = 'canvas'
-
+class Canvas(CalendarSourceTemplate):
     def extract_event_info(self, event, event_dictionary):
+        event_dictionary['source_name'] = "canvas"
+
         partitioned_summary = event['summary'].partition('[')
         event_dictionary['name'] = partitioned_summary[0]
 
@@ -16,9 +16,3 @@ class calendar(CalendarSourceTemplate):
     def filter_event(self, event):
         return not 'calendar' in event['UID']
 
-    @staticmethod
-    def matches_source(link):
-        return 'canvas' in link
-
-
-# example (liza's calendar); https://canvas.illinois.edu/feeds/calendars/user_oy5oQZ5fExWwQr7GfvkKebDeZw17GJSB5U3WiQX7.ics

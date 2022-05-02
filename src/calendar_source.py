@@ -1,7 +1,6 @@
 from icalendar import Calendar
 import requests
-from .settings import format, tz, date, datefor
-# from settings import format, tz, date, datefor
+from settings import format, tz, date, datefor
 import datetime
 from dateutil.rrule import rrule
 
@@ -81,8 +80,6 @@ class CalendarSourceTemplate:
             length = (dtend - dtstart).total_seconds() / 60.0
             dtstart, dtend = nextrule, nextrule + length
 
-        event_dictionary['source_name'] = self.source_name
-        
         event_dictionary['end timestamp'] = f'{dtend.year}/{dtend.month:02d}/{dtend.day:02d}/{dtend.hour:02d}/{dtend.minute:02d}'
 
         # format required; mm/dd/yyyy
@@ -90,9 +87,9 @@ class CalendarSourceTemplate:
         event_dictionary['end date'] = f'{dtend.month}/{dtend.day}/{dtend.year}'
 
         # format (arbitrarily decided): Time Day date. Month Year
-        event_dictionary['start date and time'] = dtstart.isoformat()
-        event_dictionary['end date and time'] = dtend.isoformat()
-        
+        event_dictionary['start date and time'] = dtstart.strftime("%I:%M%p %A, %d. %B")
+        event_dictionary['end date and time'] = dtend.strftime("%I:%M%p %A, %d. %B")
+
         return event_dictionary
 
     # <------------- functions that will be overriden ------------->
@@ -104,7 +101,3 @@ class CalendarSourceTemplate:
     # return the event's name using the string object
     def stringify_event_name(self, event):
         return ''
-
-    @staticmethod
-    def matches_source(link):
-        return False

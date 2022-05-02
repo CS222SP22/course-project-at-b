@@ -11,8 +11,6 @@ from selenium import webdriver
 from webdriver_manager.chrome import ChromeDriverManager
 
 import csv
-import notion
-import json
 
 from calendar_source_cbtf import Cbtf
 from calendar_source_canvas import Canvas
@@ -33,7 +31,7 @@ def csvManage(calendar_links, output_option):   # CHANGE THIS SHOULD ONLY BE CAL
     fieldnames_default_ = ['name', 'type', 'course', 'start date', 'end date', 'start date and time', 'end date and time', 'end timestamp', 'source_name']
     fieldnames_todoist_ = ['TYPE','CONTENT', 'DESCRIPTION', 'DATE','DATE_LANG']
 
-    # iterate through each link in list of links
+    # iterate through each link in list of links and add dictionaries for each calendar event in calendar_dictionaries
     calendar_dictionaries = []  # list of new calendar links as dictionaries
     for d in calendar_links:
         calendar_link = d['url']
@@ -52,8 +50,6 @@ def csvManage(calendar_links, output_option):   # CHANGE THIS SHOULD ONLY BE CAL
             driver = webdriver.Chrome(ChromeDriverManager().install())
             calendar_dictionaries.append(prairie_source.request(open("data/secret.txt", "r"), driver))
 
-        for cal_src in calendar_source_classes:
-            calendar_dictionaries.append(cal_src.request())
     # list of dictionaries
     new_data = []
     old_events = []
@@ -80,7 +76,6 @@ def csvManage(calendar_links, output_option):   # CHANGE THIS SHOULD ONLY BE CAL
     # check if each new event exists in the old data and add it to new_data if not found
     for dictionary in calendar_dictionaries:
         for event_dic in dictionary:
-            # print(event_dic)
             found = False
             for old_dic in old_events:
                 if event_dic["name"].strip() == old_dic["name"].strip():
@@ -96,14 +91,11 @@ def csvManage(calendar_links, output_option):   # CHANGE THIS SHOULD ONLY BE CAL
     
     # update new data file, format dependent on user's output option
     if output_option=='notion':
-        try:
-            ofs = open('data/notion_config.json', 'r')
-        except IOError:
-            print('You must configure notion first')
-        else:
-            print(new_data)
-            data = json.load(ofs)
-            notion.send_to_notion(new_data, data['database_id'], data['api_key'])
+        new_file = open('data/new_data.csv', mode='w')
+        new_writer = csv.DictWriter(new_file, fieldnames=fieldnames_default_)
+        new_writer.writeheader()
+        new_writer.writerows(new_data)
+        new_file.close()
     elif output_option=='todoist':
         convertToTodoistFormat(new_data)
 
