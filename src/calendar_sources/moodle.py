@@ -1,6 +1,8 @@
-from calendar_source import CalendarSourceTemplate
+from .template.calendar_source import CalendarSourceTemplate
 
-class Moodle(CalendarSourceTemplate):
+class calendar(CalendarSourceTemplate):
+    source_name = "moodle"
+
     def extract_event_info(self, event, event_dictionary):
         event_dictionary['source_name'] = "moodle"
 
@@ -14,3 +16,7 @@ class Moodle(CalendarSourceTemplate):
     
     def filter_event(self, event):
         return 'categories' in event
+
+    @staticmethod
+    def matches_source(link):
+        return 'learn.illinois' in link

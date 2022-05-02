@@ -1,11 +1,16 @@
-from calendar_source import CalendarSourceTemplate
+from .template.calendar_source import CalendarSourceTemplate
+
+from selenium import webdriver
+from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
 import time
 from bs4 import BeautifulSoup
 from datetime import datetime, date
 
-class Prairie(CalendarSourceTemplate):
+class calendar(CalendarSourceTemplate):
+    source_name = 'prairielearn'
+
     def extract_event_info(self, event, event_dictionary):
 
         event_dictionary['source_name'] = "prairielearn"
@@ -19,19 +24,21 @@ class Prairie(CalendarSourceTemplate):
     def filter_event(self, assign):
         return "instance #" in assign[2] or assign[2] == "None" or "Assessment closed" in assign[2]
     
-    def request(self, f, driver):
+    def request(self):
         # Login to PL
+        f = open("data/secret.txt", "r")
         email = f.readline()    
         password = f.readline()    
+        driver = webdriver.Chrome(ChromeDriverManager().install())
         driver.get("https://www.prairielearn.org/")
         driver.find_element(By.LINK_TEXT, "Log in").click()
-        time.sleep(5) 
+        time.sleep(2) 
         driver.find_element(By.LINK_TEXT, "Sign in with Illinois").click()
-        time.sleep(5) 
+        time.sleep(2) 
         driver.find_element(By.ID, "userNameInput").send_keys(email + Keys.ENTER)
-        time.sleep(5) 
+        time.sleep(2) 
         driver.find_element(By.ID, "passwordInput").send_keys(password + Keys.ENTER)
-        time.sleep(5) 
+        time.sleep(2) 
     
         driver.get(self.link)
         
@@ -66,19 +73,24 @@ class Prairie(CalendarSourceTemplate):
             time_str_formatted = time_str + " " + str(date.today().year)
 
             time_obj = datetime.strptime(time_str_formatted, '%H:%M, %b %d %Y')
+            final_time_str = time_obj.isoformat(" ")
 
             event_dictionary = {
                     'name': assign[0] + ": " + assign[1],
                     'type': 'Needs to be manually sorted',
                     'course': this_class[0],
                     "start date": '',
-                    "end date": time_obj,
+                    "end date": '',
                     "start date and time": '',
-                    "end date and time": time_obj,
-                    "end timestamp": time_str,
+                    "end date and time": '',
+                    "end timestamp": '',
                     "source_name": "prairielearn"
             }
 
             assignments_list.append(event_dictionary)
 
         return assignments_list
+    
+    @staticmethod
+    def matches_source(link):
+        return 'prairielearn' in link
