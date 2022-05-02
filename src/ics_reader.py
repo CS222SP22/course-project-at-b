@@ -6,15 +6,21 @@ import requests
 from icalendar import Calendar, Event, vDatetime
 from pytz import timezone
 import dateutil.rrule as rrule
+
+from selenium import webdriver
+from webdriver_manager.chrome import ChromeDriverManager
+
 import csv
 import notion
 import json
 
-import calendar_sources
+from calendar_source_cbtf import Cbtf
+from calendar_source_canvas import Canvas
+from calendar_source_moodle import Moodle
+from calendar_source_prairie import Prairie
 
 """
 csvManage(calendars)
-
 Takes a calendar link and lms name and writes to CSVs and makes new and old csv files
 """
 def csvManage(calendar_links, output_option):   # CHANGE THIS SHOULD ONLY BE CALLED ONCE
@@ -29,13 +35,22 @@ def csvManage(calendar_links, output_option):   # CHANGE THIS SHOULD ONLY BE CAL
 
     # iterate through each link in list of links
     calendar_dictionaries = []  # list of new calendar links as dictionaries
-    for calendar_link in calendar_links:
-        calendar_source_classes = []
-
-        for calendar_source in calendar_sources.__all__:
-            if calendar_source.calendar.matches_source(calendar_link['url']):
-                calendar_source_classes.append(calendar_source.calendar(calendar_link['url']))
-                break
+    for d in calendar_links:
+        calendar_link = d['url']
+        lms = d['lms']
+        if lms=="cbtf":
+            cbtf_source = Cbtf(calendar_link)
+            calendar_dictionaries.append(cbtf_source.request())
+        if lms=="canvas":
+            canvas_source = Canvas(calendar_link)
+            calendar_dictionaries.append(canvas_source.request())
+        if lms=="moodle":
+            moodle_source = Moodle(calendar_link)
+            calendar_dictionaries.append(moodle_source.request())
+        if lms=="prairielearn":
+            prairie_source = Prairie(calendar_link)
+            driver = webdriver.Chrome(ChromeDriverManager().install())
+            calendar_dictionaries.append(prairie_source.request(open("data/secret.txt", "r"), driver))
 
         for cal_src in calendar_source_classes:
             calendar_dictionaries.append(cal_src.request())
@@ -119,3 +134,4 @@ def convertToTodoistFormat(notion_new_data):    #TODO: make this just take and r
         todoist_writer.writerow(new_format_dict)
 
     todoist_new_file.close()
+

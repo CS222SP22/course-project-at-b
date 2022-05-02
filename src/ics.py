@@ -15,6 +15,9 @@ import sys
 from ics_reader import csvManage
 import json
 import notion
+from selenium import webdriver
+from webdriver_manager.chrome import ChromeDriverManager
+from pl_scraping import getClassLinks
 
 filename = 'data/user_input.json'
 notion_config_filename =  'data/notion_config.json'
@@ -42,14 +45,31 @@ def add(link, lms):
 			return
 
 	# value doesn't already exist, hence adding to list of LMSes
-	data['links'].append({'url':link, 'lms': lms})
-	data['link-count'] += 1
+	# if lms is prairielearn, get links first
+	if lms=="prairielearn":
+		try:
+			open("data/secret.txt", 'r').close()
+		except IOError:
+			secrets_file = open("data/secret.txt", 'w')
+			username = input("Please Enter Your School Email: ")
+			password = input("Please Enter Your Self-Service Password: ")
+			secrets_file.write(username + "\n" + password)
+			secrets_file.close()
+		
+		driver = webdriver.Chrome(ChromeDriverManager().install())
+		pl_links = getClassLinks(open("data/secret.txt", "r"), driver)
+		for link in pl_links:
+			data['links'].append({'url':link, 'lms': lms})
+			data['link-count'] += 1
+	else:
+		data['links'].append({'url':link, 'lms': lms})
+		data['link-count'] += 1
 	
 	# writing back to json file
 	with open(filename, 'w') as f:
 		json.dump(data, f)
 	
-	print('Added Link to Source File')
+	print('Added Link(s) to Source File')
 
 def read(output_option): 
 	try:
