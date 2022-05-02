@@ -14,4 +14,3 @@ class Moodle(CalendarSourceTemplate):
     
     def filter_event(self, event):
         return 'categories' in event
-

@@ -7,15 +7,18 @@ from icalendar import Calendar, Event, vDatetime
 from pytz import timezone
 import dateutil.rrule as rrule
 
+from selenium import webdriver
+from webdriver_manager.chrome import ChromeDriverManager
+
 import csv
 
 from calendar_source_cbtf import Cbtf
 from calendar_source_canvas import Canvas
 from calendar_source_moodle import Moodle
+from calendar_source_prairie import Prairie
 
 """
 csvManage(calendars)
-
 Takes a calendar link and lms name and writes to CSVs and makes new and old csv files
 """
 def csvManage(calendar_links, output_option):   # CHANGE THIS SHOULD ONLY BE CALLED ONCE
@@ -42,7 +45,10 @@ def csvManage(calendar_links, output_option):   # CHANGE THIS SHOULD ONLY BE CAL
         if lms=="moodle":
             moodle_source = Moodle(calendar_link)
             calendar_dictionaries.append(moodle_source.request())
-        # TODO: similar checks for pl, etc. go here
+        if lms=="prairielearn":
+            prairie_source = Prairie(calendar_link)
+            driver = webdriver.Chrome(ChromeDriverManager().install())
+            calendar_dictionaries.append(prairie_source.request(open("data/secret.txt", "r"), driver))
 
     # list of dictionaries
     new_data = []
@@ -70,7 +76,6 @@ def csvManage(calendar_links, output_option):   # CHANGE THIS SHOULD ONLY BE CAL
     # check if each new event exists in the old data and add it to new_data if not found
     for dictionary in calendar_dictionaries:
         for event_dic in dictionary:
-            print(event_dic)
             found = False
             for old_dic in old_events:
                 if event_dic["name"].strip() == old_dic["name"].strip():
@@ -121,3 +126,4 @@ def convertToTodoistFormat(notion_new_data):    #TODO: make this just take and r
         todoist_writer.writerow(new_format_dict)
 
     todoist_new_file.close()
+

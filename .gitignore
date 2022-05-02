@@ -9,3 +9,4 @@ output.txt
 *.txt
 data/*
 !data/.gitkeep
+secret.txt
