@@ -4,6 +4,7 @@ Usage:
 	ics.py add <link> <lms>
 	ics.py read [notion | todoist]
 	ics.py (-h | --help)
+	ics.py configure notion <database_id> <api_key>
 
 Options:
 	-h --help       Show this screen.
@@ -11,13 +12,15 @@ Options:
 '''
 from docopt import docopt
 import sys
-import ics_reader
+from ics_reader import csvManage
 import json
+import notion
 from selenium import webdriver
 from webdriver_manager.chrome import ChromeDriverManager
 from pl_scraping import getClassLinks
 
 filename = 'data/user_input.json'
+notion_config_filename =  'data/notion_config.json'
 
 def add(link, lms):
 	lms = lms.lower()
@@ -28,7 +31,7 @@ def add(link, lms):
 		print('Unable to find file, creating it!')
 	with open(filename, 'r') as f:
 		data = json.load(f)
-	
+	# 
 	#iterate through existing vals to ensure that it doesn't already exist - update if so
 	for d in data['links']:
 		if d['url'] == link or d['lms'] == lms:
@@ -78,12 +81,18 @@ def read(output_option):
 		data = json.load(ofs)
 		
 		# iterate through links and generate event strings
-		ics_reader.csvManage(data['links'], output_option)
+		csvManage(data['links'], output_option)
 
 def create_file():
 	data = {'link-count':0, 'links':[]}
 	with open(filename, 'w+') as f:
 		json.dump(data, f)
+
+def configure_notion(database_id, api_key):
+	data = { 'database_id': database_id, 'api_key': api_key}
+	with open(notion_config_filename, 'w+') as f:
+		json.dump(data, f)
+	notion.setup_table(database_id, api_key)
 
 def main(arguments):
 	if arguments['add']:
@@ -91,6 +100,8 @@ def main(arguments):
 	elif arguments['read']:
 		output_option = 'todoist' if arguments['todoist'] else 'notion'
 		read(output_option)
+	elif arguments['configure'] and arguments['notion']:
+		configure_notion(arguments['<database_id>'], arguments['<api_key>'])
 
 if __name__ == '__main__':
 	arguments = docopt(__doc__, version='ics.py 1.0')
