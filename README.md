@@ -57,3 +57,20 @@ To install packages, run the following:
 ```
 pip install -r requirements.txt
 ```
+
+# Project Instructions
+
+To configure Notion for later reading:
+```
+python src/ics.py configure notion <database_id> <api_key>
+```
+
+To add links for LMS:
+```
+python src/ics.py add <link> <lms>
+```
+
+To read and get your data:
+```
+python src/ics.py read [notion | todoist]
+```
