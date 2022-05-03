@@ -10,6 +10,8 @@ Script collects links to each LMS, and every night:
 
 # Technical Architecture
 
+![Assignment Aggregator Technical Architecture](https://drive.google.com/file/d/1ea38coGCtHEcc1FOfU1L6eIcXsVeVUoO/view?usp=sharing)
+
 # Developers
 
 - **Pranav Chandra**: Managing CSVs and Prairielearn WebScraping
