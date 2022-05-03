@@ -73,17 +73,20 @@ class calendar(CalendarSourceTemplate):
             time_str_formatted = time_str + " " + str(date.today().year)
 
             time_obj = datetime.strptime(time_str_formatted, '%H:%M, %b %d %Y')
-            final_time_str = time_obj.isoformat(" ")
+            final_time_str = time_obj.isoformat()
+
+            index_val = this_class[0].find(",")
+            class_string = this_class[0][:index_val]
 
             event_dictionary = {
                     'name': assign[0] + ": " + assign[1],
                     'type': 'Needs to be manually sorted',
-                    'course': this_class[0],
-                    "start date": '',
-                    "end date": '',
-                    "start date and time": '',
-                    "end date and time": '',
-                    "end timestamp": '',
+                    'course': class_string,
+                    "start date": final_time_str,
+                    "end date": final_time_str,
+                    "start date and time": final_time_str,
+                    "end date and time": final_time_str,
+                    "end timestamp": final_time_str,
                     "source_name": "prairielearn"
             }
 

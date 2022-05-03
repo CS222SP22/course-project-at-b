@@ -7,6 +7,8 @@ class calendar(CalendarSourceTemplate):
         partitioned_summary = event['summary'].partition('[')
         event_dictionary['name'] = partitioned_summary[0]
 
+        event_dictionary['source_name'] = "canvas"
+
         event_dictionary['type'] = 'Needs to be manually sorted'
 
         partitioned_coursename = partitioned_summary[2].partition('_')

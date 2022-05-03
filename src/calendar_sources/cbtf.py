@@ -8,6 +8,8 @@ class calendar(CalendarSourceTemplate):
 
         event_dictionary['type'] = 'Exam/Quiz'
 
+        event_dictionary['source_name'] = "cbtf"
+
         partitioned_summary = event['summary'][6:].partition(' ')	
         event_dictionary['course'] = partitioned_summary[0] + ' ' + partitioned_summary[2].partition(' ')[0]
     
