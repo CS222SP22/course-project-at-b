@@ -65,6 +65,12 @@ pip install -r requirements.txt
 python src/ics.py configure notion <database_id> <api_key>
 ```
 
+Note, you must create:
+- an integration. Use its "Internal Integration Token" as the `api_key`.
+- a new database page, and clear all rows & columns (except the name column). Use this page's id as the `database_id`.
+
+Detailed instructions on obtaining these parameters can be found here: https://developers.notion.com/docs/getting-started.
+
 2. To add links for LMS:
 ```
 python src/ics.py add <link> <lms>
