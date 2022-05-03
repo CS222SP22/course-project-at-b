@@ -16,14 +16,6 @@ Before running any code, run the following:
 venv/Scripts/activate/
 ```
 
-## Package Management
-
-To install packages, run the following:
-
-```
-pip install -r requirements.txt
-```
-
 # Development
 
 
@@ -37,4 +29,12 @@ pip install pipreqs
 To update packages, run the following from the home directory:
 ```
 pipreqs . --force
+```
+
+## Package Management
+
+To install packages, run the following:
+
+```
+pip install -r requirements.txt
 ```
