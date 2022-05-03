@@ -10,7 +10,7 @@ Script collects links to each LMS, and every night:
 
 # Technical Architecture
 
-
+![Assignment Aggregator Technical Architecture](https://user-images.githubusercontent.com/89665603/166554516-cf9de560-f453-44bc-9c2c-648ea701ee01.png)
 
 # Developers
 
