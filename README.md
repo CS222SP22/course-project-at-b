@@ -74,3 +74,4 @@ python src/ics.py add <link> <lms>
 ```
 python src/ics.py read [notion | todoist]
 ```
+3.a To access your assignments into Todoist, follow the instructions [here](https://todoist.com/help/articles/importing-or-exporting-project-templates#importing-project-templates-from-a-csv-file) to import the "new_data.csv" file to a Project. You can repeatedly import this file as it updates and Todoist will automatically merge them for you.
